@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Network Effect and Platform Competition — Bocconi PhD Study Day 2026</title>
+<meta name="description" content="Network effects in Chinese online dating markets. Bocconi PhD Study Day 2026.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']],
+         displayMath: [['$$','$$'], ['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+        id="MathJax-script" async></script>
+
+<style>
+:root {
+  /* Palette: Deep Navy + Ivory */
+  --color-primary:        #1a2952;
+  --color-primary-soft:   #e7eaf2;
+  --color-primary-deep:   #0d1730;
+  --color-sticker:        #d4a574;
+  --color-sticker-soft:   #f3e9d4;
+  --color-coral:          #b85c3a;
+  --color-coral-soft:     #f4e3da;
+  --color-mint:           #6b8e7f;
+  --color-mint-soft:      #e6ede9;
+  --color-orange:         #c08a3a;
+  --color-orange-soft:    #f3e9d4;
+  --color-ink:            #1c1c1c;
+  --color-ink-soft:       #4f4f4f;
+  --color-ink-mute:       #8a8a8a;
+  --color-cream:          #fafaf7;
+  --color-paper:          #ffffff;
+  --color-paper-warm:     #fdf6e3;
+  --color-line:           #e7e3d8;
+  --color-line-strong:    #cfc9bb;
+
+  /* Project-specific tags harmonized with palette */
+  --color-tantan:  var(--color-coral);
+  --color-yidui:   var(--color-mint);
+  --color-jiayuan: var(--color-primary);
+
+  --font-display: 'Inter', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  --fs-display:  76px;
+  --fs-h1:       46px;
+  --fs-h2:       32px;
+  --fs-h3:       30px;
+  --fs-body-lg:  29px;
+  --fs-body:     26px;
+  --fs-small:    20px;
+  --fs-tiny:     16px;
+
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px; --radius-pill: 999px;
+
+  --border-w:        0;
+  --border-default:  1px solid var(--color-line-strong);
+  --border-ink:      1px solid var(--color-ink);
+
+  --shadow-xs:        none;
+  --shadow-sm:        none;
+  --shadow-md:        none;
+  --shadow-md-coral:  none;
+  --shadow-md-mint:   none;
+  --shadow-md-orange: none;
+  --shadow-md-sticker: none;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  background: var(--color-cream);
+  color: var(--color-ink);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; display: block; }
+
+/* ─── STAGE / SLIDE ─── */
+.stage { position: fixed; inset: 0; overflow: hidden; }
+.slide {
+  position: absolute; inset: 0;
+  padding: var(--space-7);
+  display: none;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.slide[data-active] { display: flex; }
+.slide__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-h1);
+  line-height: 1.05;
+  color: var(--color-primary);
+  letter-spacing: -0.015em;
+  margin-bottom: var(--space-5);
+}
+.slide__body {
+  flex: 1;
+  display: flex; flex-direction: column;
+  gap: var(--space-4);
+  font-size: var(--fs-body);
+  line-height: 1.4;
+  overflow: hidden;
+  transform-origin: top left;
+}
+.slide__body.center { justify-content: center; }
+.slide__body > p { font-size: var(--fs-body-lg); line-height: 1.4; }
+.slide__body ul, .slide__body ol { padding-left: var(--space-7); }
+.slide__body li { margin-bottom: var(--space-2); }
+.slide__body p strong, .slide__body li strong { font-weight: 700; }
+
+/* PROGRESSIVE REVEAL — every <li> auto-reveals; layout fixed */
+.slide[data-active]:not(.no-reveal) li:not(.is-shown):not(.no-reveal),
+.slide[data-active] .reveal:not(.is-shown):not(.no-reveal) { visibility: hidden; }
+.slide[data-active] li.is-shown,
+.slide[data-active] .reveal.is-shown { animation: revealFadeIn 0.18s ease-out; }
+@keyframes revealFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ─── TITLE SLIDE ─── */
+.slide--title {
+  justify-content: center; align-items: center; text-align: center;
+}
+.slide--title .slide__session-num {
+  display: inline-block;
+  padding: var(--space-2) var(--space-5);
+  background: var(--color-sticker);
+  color: var(--color-ink);
+  border: var(--border-ink);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-h3);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-6);
+}
+.slide--title h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-display);
+  line-height: 0.96;
+  color: var(--color-primary);
+  letter-spacing: -0.02em;
+  max-width: 22ch;
+  margin: 0 auto var(--space-5);
+}
+.slide--title .slide__subtitle {
+  font-size: var(--fs-h3);
+  color: var(--color-ink-soft);
+  font-weight: 500;
+  max-width: 38ch;
+  margin: 0 auto var(--space-7);
+}
+.slide--title .slide__meta {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-body);
+  color: var(--color-ink-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ─── COLUMNS ─── */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+.cols--55 { grid-template-columns: 0.55fr 0.45fr; }
+.cols--53 { grid-template-columns: 0.53fr 0.45fr; }
+.cols--46 { grid-template-columns: 0.46fr 0.52fr; }
+.col h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-h3);
+  color: var(--color-primary);
+  margin: 0 0 var(--space-3);
+  letter-spacing: -0.015em;
+}
+.col ul { padding-left: var(--space-5); margin: 0; }
+.col li { margin-bottom: var(--space-2); font-size: var(--fs-body); line-height: 1.4; }
+.col img { border-radius: var(--radius-sm); box-shadow: var(--shadow-xs); margin-bottom: var(--space-2); }
+.col p.cap { font-size: var(--fs-tiny); color: var(--color-ink-soft); margin: 0; }
+
+/* ─── CALLOUTS — left-rule treatment, no shadow, no sticker ─── */
+.callout {
+  position: relative;
+  margin: 0;
+  padding: var(--space-4) var(--space-5); padding-left: 22px;
+  background: var(--color-paper);
+  border: none; border-left: 4px solid;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.callout__title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-h3);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+.callout__body { font-size: var(--fs-body); line-height: 1.45; color: var(--color-ink); }
+.callout__body > *:first-child { margin-top: 0; }
+.callout__body > *:last-child { margin-bottom: 0; }
+.callout__body p { margin: 0 0 var(--space-2); }
+.callout__body ul, .callout__body ol { margin: var(--space-2) 0; padding-left: var(--space-5); }
+.callout__body li { margin-bottom: var(--space-2); }
+
+.callout--prompt  { border-left-color: var(--color-primary); background: var(--color-primary-soft); }
+.callout--prompt  .callout__title { color: var(--color-primary); }
+.callout--concept { border-left-color: var(--color-mint);    background: var(--color-mint-soft); }
+.callout--concept .callout__title { color: var(--color-mint); }
+.callout--warning { border-left-color: var(--color-coral);   background: var(--color-coral-soft); }
+.callout--warning .callout__title { color: var(--color-coral); }
+.callout--key     { border-left-color: var(--color-orange);  background: var(--color-orange-soft); }
+.callout--key     .callout__title { color: var(--color-orange); }
+
+/* ─── DATA TABLE ─── */
+table.data {
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  width: 100%;
+  background: var(--color-paper);
+  border: 1px solid var(--color-line-strong);
+  overflow: hidden;
+}
+table.data thead th {
+  background: var(--color-primary);
+  color: white;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-align: left;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--fs-small);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+table.data tbody td {
+  padding: var(--space-2) var(--space-4);
+  border-top: 1px solid var(--color-line);
+}
+table.data tbody tr:nth-child(odd) td { background: var(--color-cream); }
+table.data tbody tr.divider td {
+  border-top: 2px solid var(--color-line-strong);
+  font-style: italic; color: var(--color-ink-soft);
+  font-size: var(--fs-small); padding-top: var(--space-3);
+}
+table.data .num { font-variant-numeric: tabular-nums; text-align: right; }
+
+/* ─── INLINE COLORED LABELS ─── */
+.tantan  { color: var(--color-tantan);  font-weight: 700; }
+.yidui   { color: var(--color-yidui);   font-weight: 700; }
+.jiayuan { color: var(--color-jiayuan); font-weight: 700; }
+
+/* ─── EQUATION DISPLAY ─── */
+.eqn {
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-line-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-body);
+  margin: 0;
+}
+
+/* ─── FOOTER — minimal floating ─── */
+.footer__counter {
+  position: fixed; right: var(--space-4); bottom: var(--space-4);
+  background: rgba(255,255,255,0.85);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-tiny);
+  color: var(--color-ink-soft);
+  letter-spacing: 0.04em;
+  z-index: 100;
+}
+.footer__progress {
+  position: fixed; left: 0; bottom: 0; height: 2px;
+  background: var(--color-primary); transition: width 0.2s; z-index: 100;
+}
+
+/* ─── OVERVIEW (ESC key) ─── */
+.overview {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(247,245,240,0.96); padding: var(--space-7);
+  display: none; overflow-y: auto;
+}
+.overview[data-active] { display: block; }
+.overview h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  margin: 0 0 var(--space-5);
+  color: var(--color-primary);
+}
+.overview__grid {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-3);
+}
+.overview__card {
+  background: var(--color-paper);
+  border: var(--border-ink);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  cursor: pointer;
+  display: flex; flex-direction: column;
+  gap: var(--space-2);
+  transition: transform 0.15s;
+}
+.overview__card:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow-sm); }
+.overview__card[data-current] { border-color: var(--color-primary); box-shadow: var(--shadow-md); }
+.overview__num {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-tiny);
+  color: var(--color-ink-mute);
+  letter-spacing: 0.06em;
+}
+.overview__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-small);
+  line-height: 1.2;
+  color: var(--color-ink);
+}
+
+/* ─── SECTION DIVIDER ─── */
+.slide--section {
+  justify-content: center; align-items: center; text-align: center;
+}
+.slide--section .section-tag {
+  display: inline-block;
+  padding: var(--space-2) var(--space-5);
+  background: var(--color-primary);
+  color: white;
+  border: var(--border-ink);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-small);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-5);
+}
+.slide--section h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0;
+  color: var(--color-primary);
+  max-width: 22ch;
+}
+
+/* ─── PRINT ─── */
+@page { size: 13.33in 7.5in; margin: 0; }
+@media print {
+  html, body { margin: 0; padding: 0; overflow: visible; background: white; }
+  .stage { position: static; bottom: 0; }
+  .slide {
+    position: static;
+    display: flex !important;
+    flex-direction: column;
+    page-break-after: always;
+    padding: 36px 48px;
+    width: 13.33in;
+    height: 7.5in;
+    box-sizing: border-box;
+    max-width: none;
+    margin: 0;
+  }
+  .footer__counter, .footer__progress, .overview { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<main class="stage">
+
+<!-- ─────────── 1. TITLE ─────────── -->
+<section class="slide slide--title" data-active>
+  <span class="slide__session-num">Bocconi PhD Study Day 2026</span>
+  <h1>Network Effect and Platform Competition</h1>
+  <p class="slide__subtitle">Evidence from Online Dating Markets</p>
+</section>
+
+<!-- ─────────── 2. MOTIVATION ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Motivation</h2>
+  <div class="slide__body center">
+    <div class="cols">
+      <div class="col reveal">
+        <h4>The canonical view</h4>
+        <ul>
+          <li class="no-reveal">Platforms &ldquo;powered by network effects&rdquo;: more users $\Rightarrow$ value $\Rightarrow$ <em>tipping</em></li>
+          <li class="no-reveal">Underlies both platform-efficiency narratives and antitrust concerns</li>
+          <li class="no-reveal">Treats network effects as a single <em>platform-level</em> property</li>
+        </ul>
+      </div>
+      <div class="col reveal">
+        <h4>But the relevant network is <em>local</em></h4>
+        <ul>
+          <li class="no-reveal">Dating, ride-hail, classifieds: utility depends on the local matching pool, not global size (Tucker 2008; Candogan &amp; Bloch 2013)</li>
+          <li class="no-reveal">How <em>local</em> conditions shape network-effect strength is still empirically open</li>
+          <li class="no-reveal">Prior work: positive shocks; <strong>we exploit a negative regulatory shock</strong></li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout callout--key reveal">
+      <h4 class="callout__title">Our setting</h4>
+      <div class="callout__body">
+        May 2019: <span class="tantan">Tantan</span> removed from major Chinese app stores for ~2 months. National policy, but pre-shock intensity varies across 100 cities. Existing users retained access; rivals unaffected.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 3. FOUR RQs ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Four Research Questions</h2>
+  <div class="slide__body">
+    <ol style="line-height: 1.6; margin-top: 6vh;">
+      <li style="margin-bottom: var(--space-5)"><strong>Propagation.</strong> How does a regulatory removal affect user participation on the focal platform and its rivals — across new users and existing engagement?</li>
+      <li style="margin-bottom: var(--space-5)"><strong>Heterogeneity.</strong> How do local market characteristics shape the <em>pattern</em> of these responses across cities?</li>
+      <li style="margin-bottom: var(--space-5)"><strong>Magnitude.</strong> What is the underlying strength of local network effects — how much do users value platform size as a structural preference parameter?</li>
+      <li style="margin-bottom: var(--space-5)"><strong>Market structure.</strong> How does network-effect strength translate into market concentration?</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ─────────── 4. DATA OVERVIEW ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Data Overview</h2>
+  <div class="slide__body">
+    <div class="cols cols--55">
+      <div class="col">
+        <h4>Panel dataset</h4>
+        <ul>
+          <li>100 largest Chinese cities</li>
+          <li>Daily observations, 2018&ndash;2020</li>
+          <li><strong>Outcomes:</strong> DAU, MAU, daily new-user registrations, sessions/user, time spent</li>
+          <li><strong>City characteristics:</strong> GDP per capita, density, urbanization, age/gender/income distribution, offline dating amenities</li>
+        </ul>
+      </div>
+      <div class="col reveal">
+        <h4>Apps in sample</h4>
+        <table class="data">
+          <thead><tr><th>App</th><th>Type</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tantan">Tantan</span></td><td>Casual (Tinder-like)</td></tr>
+            <tr><td><span class="yidui">Yidui</span></td><td>Casual</td></tr>
+            <tr><td><span class="jiayuan">Jiayuan</span></td><td>Marriage-oriented</td></tr>
+            <tr><td>Momo</td><td>Casual / social</td></tr>
+            <tr><td>Blued</td><td>Gay dating</td></tr>
+            <tr><td>Soul</td><td>Interest-based</td></tr>
+            <tr class="divider"><td colspan="2">Non-dating apps (control)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="callout callout--concept reveal">
+      <h4 class="callout__title">Scale of the shock</h4>
+      <div class="callout__body">
+        <span class="tantan">Tantan</span>: ~216,500 new users/day pre-shock; suspended ~2 months from May 1, 2019. After suspension: ~110,700/day ($-$49%).
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 5. DESCRIPTIVE I ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Descriptive Evidence I: New-User Responses</h2>
+  <div class="slide__body">
+    <p><strong>Tantan&rsquo;s suspension generated sharply heterogeneous competitive responses.</strong></p>
+    <div class="cols cols--46">
+      <div class="col">
+        <ul>
+          <li><span class="tantan">Tantan</span>: near-universal losses across cities</li>
+          <li><span class="yidui">Yidui</span>: large, uniform gains across cities</li>
+          <li><span class="jiayuan">Jiayuan</span>: muted / mixed responses</li>
+          <li>Consistent with product differentiation: casual vs. marriage-oriented</li>
+          <li>Magnitude varies markedly across cities — <em>not</em> a uniform shock</li>
+        </ul>
+      </div>
+      <div class="col">
+        <div style="display: flex; justify-content: space-around; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-body); margin-bottom: var(--space-2);">
+          <span class="tantan">Tantan</span>
+          <span class="jiayuan">Jiayuan</span>
+          <span class="yidui">Yidui</span>
+        </div>
+        <img src="../figures/shock_new_dating_apps3.png" alt="Cross-city change in new users by app">
+        <p class="cap">Red = positive change, blue = negative change.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 6. DESCRIPTIVE II ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Descriptive Evidence II: Engagement</h2>
+  <div class="slide__body">
+    <p><strong>The shock propagated to <em>existing</em> users despite no access restrictions.</strong></p>
+    <div style="display:grid; grid-template-columns:auto 1fr 1fr; column-gap:var(--space-5); row-gap:var(--space-3); align-items:center">
+      <div style="grid-row:1; grid-column:1"></div>
+      <h4 style="grid-row:1; grid-column:2; color:var(--color-tantan); text-align:center; margin:0">Tantan</h4>
+      <h4 style="grid-row:1; grid-column:3; color:var(--color-yidui); text-align:center; margin:0">Yidui</h4>
+
+      <div style="grid-row:2; grid-column:1; text-align:right;font-family:var(--font-display);font-weight:700;font-size:var(--fs-small);color:var(--color-ink-soft);line-height:1.15">Avg time<br>spent</div>
+      <div style="grid-row:3; grid-column:1; text-align:right;font-family:var(--font-display);font-weight:700;font-size:var(--fs-small);color:var(--color-ink-soft);line-height:1.15">Sessions<br>per user</div>
+
+      <!-- Tantan column (reveals first) -->
+      <img class="reveal" src="../figures/tantan_time_spent_avg_2019.png" alt="Tantan time spent" style="grid-row:2; grid-column:2; max-height:28vh;width:auto;margin:0 auto">
+      <img class="reveal" src="../figures/tantan_session_2019.png" alt="Tantan sessions" style="grid-row:3; grid-column:2; max-height:28vh;width:auto;margin:0 auto">
+
+      <!-- Yidui column (reveals second) -->
+      <img class="reveal" src="../figures/yidui_time_spent_avg_2019.png" alt="Yidui time spent" style="grid-row:2; grid-column:3; max-height:28vh;width:auto;margin:0 auto">
+      <img class="reveal" src="../figures/yidui_session_2019.png" alt="Yidui sessions" style="grid-row:3; grid-column:3; max-height:28vh;width:auto;margin:0 auto">
+    </div>
+    <p class="cap" style="text-align:center;color:var(--color-ink-soft);font-size:var(--fs-tiny)">
+      Orange dashed = suspension start (May 1); blue dashed = reinstatement (Jul 1). Tantan engagement &darr;; Yidui &uarr;.
+    </p>
+  </div>
+</section>
+
+<!-- ─────────── 7. DESCRIPTIVE III ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Descriptive Evidence III: 30-Day Retention</h2>
+  <div class="slide__body">
+    <div class="callout callout--key reveal">
+      <h4 class="callout__title">Key insight</h4>
+      <div class="callout__body">
+        Existing Tantan users <em>retained access</em> — yet they disengaged. The platform became <em>less valuable</em> as the matching market shrank.
+      </div>
+    </div>
+    <div class="reveal" style="text-align:center">
+      <img src="../figures/retention_trends_new.png" alt="Retention trends" style="max-height:55vh;width:auto;max-width:90%;margin:0 auto">
+      <p class="cap" style="color:var(--color-ink-soft);font-size:var(--fs-tiny)">
+        Dashed line = May 1, 2019. <span class="tantan">Tantan</span> retention &darr; sharply; <span class="yidui">Yidui</span> &uarr; gradually; <span class="jiayuan">Jiayuan</span> no clear break.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 8. DAU DECOMPOSITION ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">DAU Decomposition: New vs. Existing Users</h2>
+  <div class="slide__body">
+    <p><strong>Goal:</strong> separately identify responses on the <em>extensive margin</em> (new users) and <em>intensive margin</em> (incumbent engagement).</p>
+    <div class="cols">
+      <div class="col">
+        <h4>Rolling 30-day window</h4>
+        <p class="eqn">$\mathrm{NewDAU}^{(30)}_t = \displaystyle\sum_{c=t-30}^{t} N_c \cdot r(t-c)$</p>
+        <p>where $r(a)$ is the retention rate for users of age $a$.</p>
+        <p class="eqn">$\mathrm{ExistingDAU}^{(30)}_t = \mathrm{DAU}_t - \mathrm{NewDAU}^{(30)}_t$</p>
+      </div>
+      <div class="col">
+        <img src="../figures/rolling_dau_decomposition_2019.png" alt="DAU decomposition">
+        <p class="cap">New DAU = users joined in past 30 days; Existing DAU = older cohorts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 9. SECTION DIVIDER: IDENTIFICATION ─────────── -->
+<section class="slide slide--section">
+  <span class="section-tag">Part II</span>
+  <h2>Identification Strategy</h2>
+</section>
+
+<!-- ─────────── 10. BAYESIAN SYNTHETIC CONTROL ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Empirical Strategy: Bayesian Synthetic Control</h2>
+  <div class="slide__body">
+    <p><strong>Challenge:</strong> platform user bases are endogenous. <strong>Approach:</strong> exploit Tantan&rsquo;s suspension as a quasi-exogenous shock; treatment effect $\tau_{jct} = Y_{jct} - \hat{Y}^{0}_{jct}$, summarized as ATT.</p>
+    <div class="callout callout--prompt">
+      <h4 class="callout__title">Synthetic control (Pang, Liu &amp; Xu 2022)</h4>
+      <div class="callout__body">
+        <ul>
+          <li>Latent factor model flexibly matches pre-shock dynamics</li>
+          <li><strong>Donor pool:</strong> non-dating apps + same app&rsquo;s previous-year trajectory — plausibly unaffected by the shock</li>
+          <li>Treatment effect at app &times; city level</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout callout--key reveal">
+      <h4 class="callout__title">Identification of network effects</h4>
+      <div class="callout__body">
+        Existing users who <em>retained access</em> change behavior $\Rightarrow$ attributable to reduced network value, not supply restriction.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 11. SECTION DIVIDER: REDUCED-FORM ─────────── -->
+<section class="slide slide--section">
+  <span class="section-tag">Part III</span>
+  <h2>Reduced-Form Results</h2>
+  <ol style="text-align: left; max-width: 70ch; margin-top: var(--space-6); padding-left: var(--space-6); font-size: var(--fs-body-lg); line-height: 1.5;">
+    <li style="margin-bottom: var(--space-4);"><strong>Propagation.</strong> How does a regulatory removal affect user participation on the focal platform and its rivals — across new users and existing engagement?</li>
+    <li><strong>Heterogeneity.</strong> How do local market characteristics shape the <em>pattern</em> of these responses across cities?</li>
+  </ol>
+</section>
+
+<!-- ─────────── 12. ATT NEW USERS ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Results: ATT on New Users</h2>
+  <div class="slide__body">
+    <div class="cols cols--53">
+      <div class="col">
+        <h4>Summary of ATTs (100 cities)</h4>
+        <table class="data">
+          <thead><tr><th>App</th><th class="num">Avg ATT</th><th class="num">% Signif.</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tantan">Tantan</span></td><td class="num">$-57.4\%$</td><td class="num">100%</td></tr>
+            <tr><td><span class="yidui">Yidui</span></td><td class="num">$+37.7\%$</td><td class="num">74%</td></tr>
+            <tr><td><span class="jiayuan">Jiayuan</span></td><td class="num">$-10.3\%$</td><td class="num">27%</td></tr>
+          </tbody>
+        </table>
+        <h4 style="margin-top:var(--space-5)">Interpretation</h4>
+        <ul>
+          <li>Tantan: clean, near-universal supply restriction</li>
+          <li>Yidui: close casual-dating substitute</li>
+          <li>Jiayuan: different segment — marriage vs. casual</li>
+        </ul>
+      </div>
+      <div class="col">
+        <div style="display: flex; justify-content: space-around; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-body); margin-bottom: var(--space-2);">
+          <span class="tantan">Tantan</span>
+          <span class="jiayuan">Jiayuan</span>
+          <span class="yidui">Yidui</span>
+        </div>
+        <img src="../figures/rel_new_users_ATT_distribution.png" alt="New-user ATT distribution">
+        <img src="../figures/rel_city_new_att_by_app.png" alt="City-level new-user ATT">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 13. ATT EXISTING USERS ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Results: ATT on Existing Users</h2>
+  <div class="slide__body">
+    <div class="cols cols--53">
+      <div class="col">
+        <h4>Existing-user ATTs (100 cities)</h4>
+        <table class="data">
+          <thead><tr><th>App</th><th class="num">Avg ATT</th><th class="num">% Signif.</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tantan">Tantan</span></td><td class="num">$-15.3\%$</td><td class="num">98%</td></tr>
+            <tr><td><span class="yidui">Yidui</span></td><td class="num">$+172.7\%$</td><td class="num">100%</td></tr>
+            <tr><td><span class="jiayuan">Jiayuan</span></td><td class="num">$+8.9\%$</td><td class="num">34%</td></tr>
+          </tbody>
+        </table>
+        <div class="callout callout--key reveal" style="margin-top:var(--space-4)">
+          <h4 class="callout__title">Network effects identified</h4>
+          <div class="callout__body">
+            Tantan users who <em>retained access</em> reduced engagement by 15% — attributed to the shrinking matching market around them, not supply restrictions.
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div style="display: flex; justify-content: space-around; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-body); margin-bottom: var(--space-2);">
+          <span class="tantan">Tantan</span>
+          <span class="jiayuan">Jiayuan</span>
+          <span class="yidui">Yidui</span>
+        </div>
+        <img src="../figures/rel_existing_users_ATT_distribution.png" alt="Existing-user ATT distribution">
+        <img src="../figures/rel_city_existing_att_by_app.png" alt="City-level existing-user ATT">
+        <p class="cap">Yidui&rsquo;s $+172.7\%$ reflects network amplification &amp; smaller baseline.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 14. BRAND-REPUTATION REBUTTAL ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Robustness: Ruling Out Brand-Reputation Effects</h2>
+  <div class="slide__body">
+    <p><strong>Alternative interpretation:</strong> existing-user disengagement could reflect <em>reputational damage</em> from the takedown, not network shrinkage.</p>
+
+    <div class="cols">
+      <div class="col reveal">
+        <h4>Placebo test setup (March 1, 2019)</h4>
+        <ul>
+          <li class="no-reveal">By March 2019, critical coverage of Tantan&rsquo;s inappropriate content was already circulating; no formal regulatory action yet</li>
+          <li class="no-reveal">A slow-burn reputational channel should already be disengaging incumbents</li>
+        </ul>
+      </div>
+      <div class="col reveal">
+        <h4>Result</h4>
+        <ul>
+          <li class="no-reveal">Re-estimate bpCausal with placebo treatment date $=$ March 1, 2019</li>
+          <li class="no-reveal">Post-placebo ATT on existing-user DAU $= \mathbf{+4.9\%}$, indistinguishable from zero</li>
+          <li class="no-reveal">vs. actual May 2019 ATT of $\mathbf{-15.3\%}$ on the same outcome — opposite sign, order of magnitude apart</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout callout--concept reveal">
+      <h4 class="callout__title">Conclusion</h4>
+      <div class="callout__body">
+        A reputation channel that should have been acting by March 2019 leaves no detectable trace. The May 2019 disengagement <strong>traces to network shrinkage, not stigma</strong>.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 15. CITY HETEROGENEITY ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">City-Level Heterogeneity</h2>
+  <div class="slide__body" style="justify-content: flex-start; padding-top: 18vh">
+    <p><strong>What predicts the cross-city variation in treatment effects?</strong> Regress city-level ATT on pre-shock market characteristics (controlling for city demographics):</p>
+    <div class="cols cols--55" style="margin-top: 4vh">
+      <div class="col">
+        <table class="data">
+          <thead>
+            <tr><th></th><th class="num">(1) New Users</th><th class="num">(2) Existing</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>$\log$(Pre-shock DAU)</td><td class="num">$+0.0655^{**}$</td><td class="num">$-0.0464^{**}$</td></tr>
+            <tr><td>Pre-shock mkt share</td><td class="num">$+1.041^{***}$</td><td class="num">$-0.119$</td></tr>
+            <tr><td>City controls</td><td class="num">✓</td><td class="num">✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col">
+        <h4>Double-edged thick markets</h4>
+        <ul>
+          <li><span class="yidui">Resilient</span> new-user acquisition</li>
+          <li><span class="tantan">More vulnerable</span> existing-user engagement</li>
+        </ul>
+        <p class="reveal" style="margin-top:var(--space-3)"><strong>Takeaway:</strong> strong pre-shock networks are both an asset and a liability.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 15b. INTERPRETING THE ASYMMETRY ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Interpreting the Asymmetry: Stock vs.&nbsp;Flow</h2>
+  <div class="slide__body center">
+    <p><strong>Why are thicker markets simultaneously more resilient (new users) and more vulnerable (existing users)?</strong> The two margins depend on different parts of the local matching market.</p>
+
+    <div class="cols">
+      <div class="col reveal">
+        <h4 style="color:var(--color-yidui)">New-user margin: <em>stock</em> matters</h4>
+        <ul>
+          <li class="no-reveal">Every incumbent is novel to a new user; thicker stock $\rightarrow$ joining still attractive</li>
+          <li class="no-reveal">$\Rightarrow$ thicker markets <strong>more resilient</strong> on acquisition</li>
+        </ul>
+      </div>
+      <div class="col reveal">
+        <h4 style="color:var(--color-tantan)">Existing-user margin: <em>flow</em> matters</h4>
+        <ul>
+          <li class="no-reveal">Incumbents have exhausted breadth $\rightarrow$ engagement depends on <em>flow</em> of new arrivals</li>
+          <li class="no-reveal">Smaller % drop, but larger <em>absolute</em> drop (higher baseline); incumbents respond to absolute numbers</li>
+          <li class="no-reveal">$\Rightarrow$ thicker markets <strong>more vulnerable</strong> on engagement</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 16. SECTION DIVIDER: STRUCTURAL ─────────── -->
+<section class="slide slide--section">
+  <span class="section-tag">Part IV</span>
+  <h2>Structural Model</h2>
+  <ol start="3" style="text-align: left; max-width: 70ch; margin-top: var(--space-6); padding-left: var(--space-6); font-size: var(--fs-body-lg); line-height: 1.5;">
+    <li style="margin-bottom: var(--space-4);"><strong>Magnitude.</strong> What is the underlying strength of local network effects — how much do users value platform size as a structural preference parameter?</li>
+    <li><strong>Market structure.</strong> How does network-effect strength translate into market concentration?</li>
+  </ol>
+</section>
+
+<!-- ─────────── 17. STRUCTURAL SETUP ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Structural Model: Setup</h2>
+  <div class="slide__body">
+    <p><strong>BLP demand model</strong> at the level of <em>activity occasions</em>.</p>
+    <p class="eqn">$U_{ijct} = \alpha_j + \beta_{i,c}\log(\mathrm{MAU}_{j,c,t-1}) + \gamma^\top X_{jct} + \varepsilon_{ijct}$</p>
+    <p><strong>Heterogeneous network preferences:</strong></p>
+    <p class="eqn">$\beta_{i,c} = \beta_0 + \eta^\top Z_c + \theta_{\mathrm{age}}\,\mathrm{age}_i + \sigma\,\nu_i, \quad \nu_i \sim \mathcal{N}(0,1)$</p>
+    <div class="cols">
+      <div class="col">
+        <h4>Heterogeneity sources</h4>
+        <ul>
+          <li>$Z_c$: log GDP per capita, density (centered)</li>
+          <li>Age: drawn from city Census distribution</li>
+          <li>$\sigma\,\nu_i$: unobserved taste shock on network value</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Key modeling choices</h4>
+        <ul>
+          <li>DAU = usage share, not exclusive ownership</li>
+          <li>Outside option: non-usage + unobserved apps</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 18. STRUCTURAL ESTIMATES ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Structural Estimates</h2>
+  <div class="slide__body">
+    <table class="data" style="font-size:var(--fs-small)">
+      <thead>
+        <tr><th></th><th class="num">(1) BLP</th><th class="num">(2) + city het.</th><th class="num">(3) + age demo.</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>$\hat{\beta}_0$</td><td class="num">$0.604^{***}$</td><td class="num">$0.613^{***}$</td><td class="num" style="color:var(--color-coral);font-weight:700">$0.598^{***}$</td></tr>
+        <tr><td></td><td class="num">$(0.062)$</td><td class="num">$(0.065)$</td><td class="num">$(0.106)$</td></tr>
+        <tr><td>$\hat{\eta}_1$ ($\times \log\mathrm{GDP}_c$)</td><td class="num">—</td><td class="num">$0.013^{***}$</td><td class="num" style="color:var(--color-coral);font-weight:700">$0.013^{***}$</td></tr>
+        <tr><td></td><td class="num"></td><td class="num">$(0.003)$</td><td class="num">$(0.004)$</td></tr>
+        <tr><td>$\hat{\eta}_2$ ($\times \mathrm{density}_c$)</td><td class="num">—</td><td class="num">$-0.024^{***}$</td><td class="num" style="color:var(--color-coral);font-weight:700">$-0.024^{***}$</td></tr>
+        <tr><td></td><td class="num"></td><td class="num">$(0.002)$</td><td class="num">$(0.002)$</td></tr>
+        <tr><td>$\hat{\theta}_{\mathrm{age}}$ ($\times \mathrm{age}_z$)</td><td class="num">—</td><td class="num">—</td><td class="num" style="color:var(--color-coral);font-weight:700">$-0.0018^{**}$</td></tr>
+        <tr><td></td><td class="num"></td><td class="num"></td><td class="num">$(0.00077)$</td></tr>
+        <tr><td>$\hat{\sigma}$ (RC s.d.)</td><td class="num">$-0.036$</td><td class="num">$-0.030$</td><td class="num">$0.054$</td></tr>
+        <tr><td></td><td class="num">$(0.124)$</td><td class="num">$(0.187)$</td><td class="num">$(0.194)$</td></tr>
+        <tr class="divider"><td colspan="4">Network-size regressor: $\log\mathrm{MAU}_{t-1}$ throughout. App FE: ✓. Micro moments in (3): 4.</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:var(--fs-small);color:var(--color-ink-soft)">
+      Column (3) is preferred: city-level interactions plus a Nevo-style age micro-moment tying model-predicted user composition to observed user-side age data. 219,000 obs, 36,500 markets.
+    </p>
+  </div>
+</section>
+
+<!-- ─────────── 20. INTERPRETING ESTIMATES ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Interpreting the Estimates</h2>
+  <div class="slide__body">
+    <div class="reveal">
+      <p><strong>Mean network effect</strong> ($\hat{\beta}_0 = 0.598$)</p>
+      <ul>
+        <li class="no-reveal">10% larger MAU $\Rightarrow$ log-odds rise by $\approx 0.057$</li>
+        <li class="no-reveal">$\approx 5.7\%$ increase in usage probability for apps with small shares</li>
+      </ul>
+    </div>
+
+    <div class="reveal">
+      <p><strong>City-level heterogeneity</strong></p>
+      <ul>
+        <li class="no-reveal"><span class="yidui">Richer cities ($\hat{\eta}_1 > 0$)</span>: higher time cost $\Rightarrow$ greater value of a <em>thicker</em> matching market</li>
+        <li class="no-reveal"><span class="tantan">Denser cities ($\hat{\eta}_2 < 0$)</span>: more offline alternatives reduce incremental value of online network size</li>
+      </ul>
+    </div>
+
+    <div class="reveal">
+      <p><strong>Demographic heterogeneity</strong> ($\hat{\theta}_{\mathrm{age}} = -0.0018$)</p>
+      <ul>
+        <li class="no-reveal">Older users place less weight on platform size</li>
+        <li class="no-reveal">Identified from Nevo-style age micro-moments (Tantan, Momo, Jiayuan, Soul)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 21. SECTION DIVIDER: COUNTERFACTUAL ─────────── -->
+<section class="slide slide--section">
+  <span class="section-tag">Part V</span>
+  <h2>Counterfactual Analysis</h2>
+</section>
+
+<!-- ─────────── 22. CF METHODOLOGY ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Counterfactual Methodology</h2>
+  <div class="slide__body">
+    <p><strong>Goal:</strong> use the structural model to evaluate how network-effect strength shapes equilibrium concentration.</p>
+    <p><strong>Within-dating HHI</strong> (antitrust-standard normalization)</p>
+    <p class="eqn">$\mathrm{HHI}_{ct} = \displaystyle\sum_{j\in\mathcal{J}_{ct}} \widetilde{s}_{jct}^{2}, \qquad \widetilde{s}_{jct} = \frac{\hat{s}_{jct}}{\sum_{k\in\mathcal{J}_{ct}} \hat{s}_{kct}}$</p>
+    <div class="cols cols--46">
+      <div class="col">
+        <h4>Anchored in observed data</h4>
+        <ul>
+          <li>Pre-shock (Jan&ndash;Apr 2019): mean HHI $= 0.535$</li>
+          <li>Shock (May&ndash;Jun 2019): $0.544$ ($+1.7\%$)</li>
+          <li>Post-shock (Jul&ndash;Dec 2019): $0.525$</li>
+          <li>Actual policy concentrated the market only modestly — Tantan&rsquo;s existing users retained access</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Three categories of scenarios</h4>
+        <ul>
+          <li><strong>(i)</strong> Tantan removal (non-dominant): full May&ndash;Jun 2019 removal</li>
+          <li><strong>(ii)</strong> Momo removal (dominant): per-city dominant-platform removal, full panel</li>
+          <li><strong>(iii)</strong> Network-effect strength: vary the level $\beta_0$</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 23. CF ASYMMETRY ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Result: Dominant vs. Non-Dominant Asymmetry</h2>
+  <div class="slide__body">
+    <p><strong>(i) Removing Tantan (<em>non-dominant</em>) RAISES concentration</strong></p>
+    <ul>
+      <li>HHI $0.544 \to \mathbf{0.707}$ ($\mathbf{+30\%}$ in affected markets)</li>
+      <li>Removing a non-dominant platform <em>concentrates</em> the market</li>
+    </ul>
+    <p><strong>(ii) Removing Momo (<em>dominant</em>) CUTS concentration</strong></p>
+    <ul>
+      <li>HHI $0.531 \to \mathbf{0.355}$ ($\mathbf{-33\%}$): largest concentration-reducing intervention in our scenario set</li>
+      <li>Residual market <em>fragments</em> rather than concentrating around a single rival</li>
+    </ul>
+    <div class="callout callout--warning reveal">
+      <h4 class="callout__title">The central counterfactual result</h4>
+      <div class="callout__body">
+        Removing a non-dominant platform <em>concentrates</em> the market; removing the dominant platform <em>fragments</em> it. The May 2019 Tantan policy, in its more aggressive limit, would have made the market <strong>more</strong> concentrated.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 24. CF BETA0 LEVEL ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">(iii) Network-Effect Strength Drives Concentration</h2>
+  <div class="slide__body">
+    <div class="cols cols--46">
+      <div class="col">
+        <h4>Level of $\beta_0$</h4>
+        <ul>
+          <li>Doubling $\beta_0 = 0.598 \to 1.20$:<br>HHI $0.531 \to \mathbf{0.754}$ ($\mathbf{+42\%}$)</li>
+          <li>Halving $\beta_0 \to 0.30$:<br>HHI $\to 0.383$ ($-28\%$)</li>
+          <li>Comparable to non-dominant-platform removal: <em>the structural primitive matters as much as the policy lever</em></li>
+        </ul>
+      </div>
+      <div class="col">
+        <img src="../figures/hhi_vs_beta0.png" alt="HHI vs beta_0 sweep">
+      </div>
+    </div>
+    <div class="callout callout--concept reveal">
+      <h4 class="callout__title">Takeaway</h4>
+      <div class="callout__body">
+        Stronger network effects $\Rightarrow$ substantially more concentrated equilibria.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 25. SECTION DIVIDER: DISCUSSION ─────────── -->
+<section class="slide slide--section">
+  <span class="section-tag">Part VI</span>
+  <h2>Discussion &amp; Conclusion</h2>
+</section>
+
+<!-- ─────────── 26. DISCUSSION & CONCLUSION ─────────── -->
+<section class="slide">
+  <h2 class="slide__title">Discussion &amp; Conclusion</h2>
+  <div class="slide__body center">
+    <div class="callout callout--key" style="margin-bottom: var(--space-6)">
+      <h4 class="callout__title">Takeaway</h4>
+      <div class="callout__body">
+        Network effects are <em>local</em>: in thicker markets, new-user acquisition is more resilient to inflow shocks but existing-user engagement is more vulnerable — and stronger network effects translate into substantially more concentrated equilibria.
+      </div>
+    </div>
+    <div class="cols">
+      <div class="col reveal">
+        <h4>For platform managers</h4>
+        <ul>
+          <li class="no-reveal">Network strength is a <em>city-level</em> asset $\Rightarrow$ city-specific strategy</li>
+          <li class="no-reveal">Older segments are less network-sensitive $\Rightarrow$ <strong>age-based niche</strong> positioning is sustainable</li>
+        </ul>
+      </div>
+      <div class="col reveal">
+        <h4>For competition policy</h4>
+        <ul>
+          <li class="no-reveal">HHI direction depends on <strong>local pre-shock dominance</strong>: dominant $\to -33\%$; non-dominant $\to +30\%$</li>
+          <li class="no-reveal">Network-effect strength is itself the structural lever that matters</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 28. THANK YOU ─────────── -->
+<section class="slide slide--title">
+  <span class="slide__session-num">Thank you</span>
+  <h1>Questions?</h1>
+  <p class="slide__meta">Bocconi PhD Study Day 2026</p>
+</section>
+
+<!-- ─────────── 29. APPENDIX: IV VALIDITY ─────────── -->
+<section class="slide no-reveal">
+  <h2 class="slide__title">Appendix: Instrument Validity</h2>
+  <div class="slide__body">
+    <p><strong>Exclusion restriction</strong></p>
+    <ul>
+      <li>Suspension driven by Cyberspace Administration of China content-regulation campaign</li>
+      <li>Unrelated to local dating demand conditions</li>
+      <li>Residual regulatory sentiment absorbed by shared time fixed effects</li>
+    </ul>
+    <p><strong>First-stage diagnostics</strong></p>
+    <ul>
+      <li>Joint Wald $F = 33.1$ on the six instruments $\{\mathrm{IV}^T, \mathrm{IV}^R\} \times \{1, \log\mathrm{GDP}_c, \mathrm{dens}_c\}$</li>
+      <li>Comfortably above the Stock&ndash;Yogo critical value of $\approx 26$</li>
+      <li>Joint $F = 201.1$ on the two bare instruments without city-characteristic interactions</li>
+    </ul>
+    <p><strong>Pre-trend check</strong></p>
+    <ul>
+      <li>Dynamic treatment effects for existing Tantan users near zero in pre-shock period</li>
+      <li>Supports parallel-trends / no-anticipation assumptions</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ─────────── 30. APPENDIX: MARKET SHARE ─────────── -->
+<section class="slide no-reveal">
+  <h2 class="slide__title">Appendix: Market Share Dynamics Across Cities</h2>
+  <div class="slide__body">
+    <p><strong>Market share evolution across 9 representative cities</strong></p>
+    <div style="text-align:center">
+      <img src="../figures/market_share_stacked.png" alt="Market share dynamics" style="max-height:70vh;width:auto;max-width:95%;margin:0 auto">
+    </div>
+    <p class="cap" style="text-align:center;color:var(--color-ink-soft);font-size:var(--fs-tiny)">
+      Top row: high pre-shock Tantan share (Changchun 24.2%, Hohhot 22.3%); bottom row: low share (Yulin 10.8%). Consistent Tantan &darr; across all tiers; magnitude varies.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER — minimal floating -->
+<span class="footer__counter" id="footer-counter">1 / 1</span>
+<div class="footer__progress" id="footer-progress" style="width:0"></div>
+
+<!-- OVERVIEW (ESC) -->
+<div class="overview" id="overview">
+  <h2>Overview</h2>
+  <div class="overview__grid" id="overview-grid"></div>
+</div>
+
+<script>
+(function () {
+  const slides   = Array.from(document.querySelectorAll('.slide'));
+  const total    = slides.length;
+  const counter  = document.getElementById('footer-counter');
+  const progress = document.getElementById('footer-progress');
+  const overview = document.getElementById('overview');
+  const grid     = document.getElementById('overview-grid');
+  let current = 0;
+  let stepIndex = 0;
+
+  function getReveals() {
+    const slide = slides[current];
+    if (slide.classList.contains('no-reveal')) {
+      return slide.querySelectorAll('.reveal:not(.no-reveal)');
+    }
+    return slide.querySelectorAll('li:not(.no-reveal), .reveal:not(.no-reveal)');
+  }
+  function applyReveals() {
+    getReveals().forEach((el, i) => el.classList.toggle('is-shown', i < stepIndex));
+  }
+  function fitSlide() {
+    const body = slides[current].querySelector('.slide__body');
+    if (!body) return;
+    body.style.transform = '';
+    void body.offsetHeight;
+    const available = body.clientHeight;
+    const needed = body.scrollHeight;
+    if (needed > available + 2) {
+      body.style.transform = `scale(${available / needed})`;
+    }
+  }
+
+  function show(i, fullyRevealed) {
+    if (i < 0 || i >= total) return;
+    slides[current].removeAttribute('data-active');
+    current = i;
+    slides[current].setAttribute('data-active', '');
+    stepIndex = fullyRevealed ? getReveals().length : 0;
+    applyReveals();
+    fitSlide();
+    update();
+  }
+  function next() {
+    const list = getReveals();
+    if (stepIndex < list.length) { stepIndex++; applyReveals(); return; }
+    if (current < total - 1) show(current + 1, false);
+  }
+  function prev() {
+    if (stepIndex > 0) { stepIndex--; applyReveals(); return; }
+    if (current > 0) show(current - 1, true);
+  }
+
+  function update() {
+    counter.textContent = (current + 1) + ' / ' + total;
+    progress.style.width = (((current + 1) / total) * 100) + '%';
+    if (overview.hasAttribute('data-active')) buildOverview();
+  }
+
+  function buildOverview() {
+    grid.innerHTML = '';
+    slides.forEach((s, i) => {
+      const card = document.createElement('div');
+      card.className = 'overview__card';
+      if (i === current) card.setAttribute('data-current', '');
+      const num = String(i + 1).padStart(2, '0');
+      const titleEl = s.querySelector('.slide__title, h1, h2');
+      const t = titleEl ? titleEl.textContent.trim() :
+                (s.classList.contains('slide--title') ? 'Title slide' : 'Slide ' + num);
+      card.innerHTML = '<span class="overview__num">' + num +
+                       '</span><span class="overview__title">' + t + '</span>';
+      card.addEventListener('click', () => {
+        overview.removeAttribute('data-active');
+        show(i, false);
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  function toggleOverview() {
+    if (overview.hasAttribute('data-active')) {
+      overview.removeAttribute('data-active');
+    } else {
+      buildOverview();
+      overview.setAttribute('data-active', '');
+    }
+  }
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    switch (e.key) {
+      case 'ArrowRight': case 'PageDown': case ' ':
+        e.preventDefault(); next(); break;
+      case 'ArrowLeft': case 'PageUp':
+        e.preventDefault(); prev(); break;
+      case 'Home': e.preventDefault(); show(0, false); break;
+      case 'End':  e.preventDefault(); show(total - 1, true); break;
+      case 'Escape': e.preventDefault(); toggleOverview(); break;
+      case 'f': case 'F': e.preventDefault(); toggleFullscreen(); break;
+    }
+  });
+
+  window.addEventListener('resize', fitSlide);
+  applyReveals();
+  fitSlide();
+  update();
+})();
+</script>
+</body>
+</html>
