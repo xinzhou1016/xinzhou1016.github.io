@@ -3,88 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Xin (Stella) Zhou, Marketing PhD student at Bocconi University. Research on digital platforms, the creator economy, network effects, and AI.">
     <title>Research | Xin (Stella) Zhou</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <header>
-        <nav>
+        <nav aria-label="Main navigation">
             <ul>
                 <li><a href="index.html">About</a></li>
-                <li><a href="research.html" class="active">Research</a></li>
+                <li><a href="research.html" class="active" aria-current="page">Research</a></li>
                 <li><a href="teaching.html">Teaching</a></li>
             </ul>
         </nav>
     </header>
-
     <main>
         <div class="container">
             <div class="text-content">
                 <h1>Research</h1>
-
-                <!-- Intro -->
-                <p>
-                    My research studies the creator economy and digital platforms, 
-                    with a particular focus on how content creators monetize their work 
-                    and how platform design and AI shape creator behavior.
-                </p>
-
-                <!-- Research Interests -->
-                <section>
-                    <h2>Research Interests</h2>
-                    <p><strong>Substantive:</strong> Creator economy, Platform economics, Generative AI</p>
-                    <p><strong>Methodological:</strong> Causal Inference, Machine Learning, Multimodal Data</p>
+                <p>My research focuses on digital marketing and AI. I examine how platform design and access to technological resources shape participation, production, and consumer value.</p>
+                <section aria-labelledby="interests">
+                    <h2 id="interests">Research Interests</h2>
+                    <p><strong>Substantive:</strong> Platform Economics; Creator Economy and Governance; AI and Consumer Behavior</p>
+                    <p><strong>Methodological:</strong> Causal Inference; Empirical Industrial Organization; Machine Learning</p>
                 </section>
-
-                <!-- Working Papers -->
-                <section>
-                    <h2>Working Papers</h2>
-
+                <section aria-labelledby="working-papers">
+                    <h2 id="working-papers">Working Papers</h2>
                     <article class="paper">
-                        <h3>Democratizing the Creator Economy: Monetizing Through Subscriptions</h3>
+                        <h3>Monetizing the Long Tail through Direct Audience Support: Platform Design and Creator Responses</h3>
                         <p><em>with Kai Zhu</em></p>
-                        <p>
-                            Platforms increasingly provide direct monetization opportunities through 
-                            creator–viewer subscriptions, contrasting with traditional reach-driven 
-                            advertising models. We study the impact of the Twitch Affiliate Program (TAP), 
-                            which substantially lowered entry barriers to paid channel subscriptions and 
-                            micro-donations. Using a time-shifted difference-in-differences design, we estimate causal effects 
-                            on creator production, strategy, and revenue. TAP significantly increases content 
-                            supply, especially among smaller creators, whose streaming hours more than double. 
-                            Effort dynamics exhibit goal-gradient patterns, peaking prior to qualification and 
-                            stabilizing at a higher level afterward. Monetization access also professionalizes 
-                            creator behavior, leading to more deliberate content strategies and improved game 
-                            performance. Revenue estimates show that TAP provides meaningful supplementary 
-                            income even for median creators, demonstrating that low-barrier subscription models 
-                            can broaden participation and complement advertising-based monetization.
-                        </p>
-                        <p>
-                            <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5810724" target="_blank" rel="noopener noreferrer">
-                                View paper on SSRN
-                            </a>
-                        </p>
+                        <p><strong>Job-Market Paper · Major Revision at <em>Marketing Science</em></strong></p>
+                        <p>Digital platforms increasingly allow audiences to support creators directly, yet little is known about how expanding access to this support changes creator behavior. We study Twitch&#x27;s 2017 Affiliate Program, which extended channel subscriptions and virtual donations to smaller creators. Using a time-shifted difference-in-differences design, we find that the program increased weekly streaming hours by 42%. Relative responses were strongest among smaller creators, broadening the distribution of content production. Per-stream viewership did not detectably decline despite the increase in supply. Monetization access also changed creators&#x27; content strategies. Together, these findings identify expanded access to direct audience support as a platform-design lever for cultivating the long tail.</p>
+                        <p><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5810724" target="_blank" rel="noopener noreferrer">Earlier version on SSRN</a></p>
                     </article>
-                </section>
-
-                <!-- Work in Progress -->
-                <section>
-                    <h2>Work in Progress</h2>
-
                     <article class="paper">
-                        <h3>Network Effects and Platform Competition: Insights from Online Dating Markets</h3>
-                        <p><em>with Kai Zhu, Qiaoni Shi and Sara Valentini</em></p>
-                        <p>
-                            Network effects play a fundamental role in shaping platform markets, yet empirical evidence on their magnitude and heterogeneity remains limited. Using a comprehensive dataset on dating apps across 100 Chinese cities and leveraging the sudden suspension of a dominant app as a natural experiment, we address four key questions: (1) How does a regulatory removal affect user participation on the focal platform and its rivals? (2) What is the magnitude of local network effects revealed by this shock? (3) How do local market characteristics shape the strength of these effects? (4) How do heterogeneous network effects translate into market concentration? To answer these, we first employ a Difference-in-Differences design to quantify the shock's propagation through new user inflows and existing user engagement. Second, we estimate a structural demand model to recover network effect parameters and simulate counterfactual policy scenarios. We find that network effects are strongly positive but highly localized, varying significantly with city-level demographics. Counterfactual analyses further demonstrate that markets with stronger local network effects exhibit higher concentration and faster recovery from supply-side shocks. These findings underscore the importance of accounting for localized heterogeneity in platform strategy and antitrust analysis.
-                        </p>
+                        <h3>When New Users Stop Arriving: Replenishment and Incumbent Activity on Matching Platforms</h3>
+                        <p><em>with Kai Zhu, Qiaoni Shi, and Sara Valentini</em></p>
+                        <p>Matching platforms rely on continual acquisition not only for entrants&#x27; own activity but also to renew incumbents&#x27; opportunities. Using daily data for major dating apps across 100 Chinese cities, we study Tantan&#x27;s 2019 suspension from major Android app stores, which sharply restricted acquisition while largely preserving incumbent access. Bayesian synthetic controls show that registrations fell by 56%, the active contribution of recent cohorts by 64%, and incumbent activity by 16%. Null pre-suspension placebos, the cumulative depletion of recent cohorts, and larger incumbent declines in thicker pre-shock markets support interrupted replenishment over direct access loss, pre-existing trends, or a uniform reputation shock. The closest casual-dating rival gained registrations, whereas the marriage-oriented Jiayuan did not, indicating differentiated substitution. Under the replenishment exclusion restriction, the ratio of the incumbent and recent-cohort reduced forms implies a fresh-to-incumbent elasticity of 0.25: a 10% decline in fresh-user activity reduces incumbent activity by about 2.5%. A cohort-feedback model uses this estimate as a benchmark calibration and shows how acquisition shocks propagate through cohort retention, incumbent participation, and later acquisition. The results show that acquisition sustains the effective matching pool and incumbent participation, not merely the number of registered users.</p>
                     </article>
                 </section>
-
-
+                <section aria-labelledby="work-in-progress">
+                    <h2 id="work-in-progress">Work in Progress</h2>
+                    <article class="paper">
+                        <h3>The Value of Domain-Specific Data for AI</h3>
+                        <p><em>with Qi Wang and Kai Zhu</em></p>
+                        <p>Developing a field experiment with Boohee to study the value of domain-specific data in AI-enabled services, comparing specialized AI, general-purpose AI, and no AI support.</p>
+                    </article>
+                    <article class="paper">
+                        <h3>The Price of AI: Compute Costs, Experimentation, and Creative Production</h3>
+                        <p><em>with Kai Zhu</em></p>
+                        <p>Examines how compute costs shape experimentation, creative output, and the profitability of AI-assisted production in short-drama markets.</p>
+                    </article>
+                    <article class="paper">
+                        <h3>Copyright Enforcement and Content Supply on Twitch</h3>
+                        <p><em>with Kai Zhu</em></p>
+                        <p>Investigates how copyright enforcement affects content production and creator participation, including potential chilling effects beyond directly targeted creators.</p>
+                    </article>
+                </section>
             </div>
         </div>
     </main>
-
 </body>
 </html>
-

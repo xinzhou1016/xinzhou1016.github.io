@@ -69,3 +69,45 @@ strong {
 .icons img:hover {
     transform: scale(1.1);
 }
+
+/* Keep longer research summaries readable across screen sizes. */
+.text-content {
+    min-width: 0;
+    line-height: 1.6;
+}
+
+.paper {
+    margin-bottom: 32px;
+}
+
+.course-list li {
+    margin-bottom: 12px;
+}
+
+.image-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 700px) {
+    .container {
+        flex-direction: column;
+        margin: 20px 12px;
+    }
+
+    .text-content {
+        padding-right: 0;
+    }
+
+    .image-content {
+        margin-top: 24px;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+
+    nav ul li {
+        margin: 0 10px;
+    }
+}
